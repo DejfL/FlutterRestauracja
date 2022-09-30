@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restauracja/const.dart';
+import 'package:restauracja/screens/homeScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,62 +9,48 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Restaurancja',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      ).copyWith(
+        canvasColor: greyColor,
+        scaffoldBackgroundColor: greyColor,
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData().copyWith(color: greenColor),
+        textTheme: const TextTheme().copyWith(
+          headline3: const TextStyle(
+            color: primaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+          headline5: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+          caption: const TextStyle(
+            color: greenColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          hintStyle: TextStyle(
+            color: primaryColor.withOpacity(0.5),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
