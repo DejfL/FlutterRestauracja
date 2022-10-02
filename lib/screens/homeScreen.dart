@@ -5,12 +5,13 @@ import 'package:restauracja/const.dart';
 import 'package:restauracja/dummyData.dart';
 import 'package:restauracja/helpers/screenState.dart';
 import 'package:restauracja/models/product.dart';
+import 'package:restauracja/screens/productScreen.dart';
 import 'package:restauracja/widgets/appBar.dart';
 import 'package:restauracja/widgets/bottomNavigationBar.dart';
 import 'package:restauracja/widgets/buttons.dart';
 import 'package:restauracja/widgets/somethingWentWrong.dart';
 import 'package:restauracja/widgets/textFormField.dart';
-import '../providers/productProvider.dart';
+import '../providers/productsProvider.dart';
 import 'package:restauracja/models/category.dart' as category;
 
 class HomeScreen extends StatelessWidget {
@@ -21,12 +22,13 @@ class HomeScreen extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: ProductProvider(),
+          value: ProductsProvider(),
         ),
       ],
       builder: (context, _) {
         void searchProduct(String val) {
-          Provider.of<ProductProvider>(context, listen: false).searchText = val;
+          Provider.of<ProductsProvider>(context, listen: false).searchText =
+              val;
         }
 
         return Scaffold(
@@ -36,7 +38,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: MyTextFormField(
-                  'Wyszukaj...',
+                  hintText: 'Wyszukaj...',
                   iconData: Icons.search,
                   onChanged: searchProduct,
                 ),
@@ -56,7 +58,7 @@ class CategoriesAndProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = context.watch<ProductProvider>();
+    final productProvider = context.watch<ProductsProvider>();
 
     if (productProvider.screenState == ScreenState.Loading) {
       return const Expanded(
@@ -86,7 +88,7 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = context.watch<ProductProvider>();
+    final productProvider = context.watch<ProductsProvider>();
 
     return SizedBox(
       height: 50,
@@ -109,7 +111,7 @@ class Categories extends StatelessWidget {
   }
 
   void _selectCategory(BuildContext context, category.Category category) {
-    Provider.of<ProductProvider>(context, listen: false).selectedCategory =
+    Provider.of<ProductsProvider>(context, listen: false).selectedCategory =
         category;
   }
 }
@@ -119,7 +121,7 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = context.watch<ProductProvider>();
+    final productProvider = context.watch<ProductsProvider>();
     final List<Product> products = productProvider.products();
 
     return Expanded(
@@ -153,54 +155,67 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-          boxShadow: const [
-            BoxShadow(
-              color: primaryColor,
-              blurRadius: 5,
-              offset: Offset(0.0, -1),
-            )
-          ],
-          color: Colors.black.withOpacity(1),
-          image: DecorationImage(
-            image: NetworkImage(
-              product.imageSrc,
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.bottomCenter,
+      child: Hero(
+        tag: product.id,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductScreen(product: product),
+              ),
+            );
+          },
           child: Container(
-            height: 55,
-            width: double.infinity,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  color: primaryColor,
+                  blurRadius: 5,
+                  offset: Offset(0.0, -1),
+                )
+              ],
+              color: Colors.black.withOpacity(1),
+              image: DecorationImage(
+                image: NetworkImage(
+                  product.imageSrc,
                 ),
-                color: Colors.black.withOpacity(0.6)),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      product.name,
-                      style: Theme.of(context).textTheme.headline5,
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 55,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
+                    color: Colors.black.withOpacity(0.6)),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          product.name,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ),
+                      Text(
+                        '${product.price.toStringAsFixed(2)} zł',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ],
                   ),
-                  Text(
-                    '${product.price.toStringAsFixed(2)} zł',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
+                ),
               ),
             ),
           ),

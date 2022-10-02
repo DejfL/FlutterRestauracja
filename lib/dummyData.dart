@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:restauracja/models/modification.dart';
 import 'package:restauracja/models/product.dart';
 import 'package:restauracja/models/topping.dart';
@@ -12,21 +11,22 @@ List<category.Category> categories = [
   category.Category(5, 'Napoje'),
 ];
 
-const List<Topping> pizzaTopings = [
-  Topping(name: 'Podwójny ser', price: 2.5),
-  Topping(name: 'Salami', price: 2.5),
-  Topping(name: 'Szynka', price: 2.5),
-  Topping(name: 'Pieczarki', price: 2.5),
-  Topping(name: 'Kurczak', price: 2.5),
+List<Topping> pizzaTopings = [
+  Topping(id: 1, name: 'Podwójny ser', price: 2.5),
+  Topping(id: 2, name: 'Salami', price: 2.5),
+  Topping(id: 3, name: 'Szynka', price: 2.5),
+  Topping(id: 4, name: 'Pieczarki', price: 2.5),
+  Topping(id: 5, name: 'Kurczak', price: 2.5),
 ];
 
-const List<Modification> pizzaModifications = [
-  Modification(name: 'Bezglutenowe', price: 4),
-  Modification(name: 'Serowe brzegi', price: 6),
+List<Modification> pizzaModifications = [
+  Modification(id: 1, name: 'Bezglutenowe', price: 4),
+  Modification(id: 2, name: 'Serowe brzegi', price: 6),
 ];
 
 List<Product> products = [
   Product(
+    id: 1,
     name: 'Margherita',
     price: 25,
     imageSrc:
@@ -36,6 +36,7 @@ List<Product> products = [
     modifications: pizzaModifications,
   ),
   Product(
+    id: 2,
     name: 'Vegetariana',
     price: 27,
     imageSrc:
@@ -45,6 +46,7 @@ List<Product> products = [
     modifications: pizzaModifications,
   ),
   Product(
+    id: 3,
     name: 'Tosca',
     price: 30,
     imageSrc:
@@ -54,6 +56,7 @@ List<Product> products = [
     modifications: pizzaModifications,
   ),
   Product(
+    id: 4,
     name: 'Venezia',
     price: 31,
     imageSrc:
@@ -66,6 +69,7 @@ List<Product> products = [
   ///dania głowne
 
   Product(
+    id: 5,
     name: 'Schabowy z (do wyboru jedno z) frytkami/ryżem/ziemniakami',
     price: 35,
     imageSrc:
@@ -73,6 +77,7 @@ List<Product> products = [
     category: category.Category(3, 'Dania główne'),
   ),
   Product(
+    id: 6,
     name: 'Ryba z frytkami',
     price: 25,
     imageSrc:
@@ -80,6 +85,7 @@ List<Product> products = [
     category: category.Category(3, 'Dania główne'),
   ),
   Product(
+    id: 7,
     name: 'Placek po węgiersku',
     price: 25,
     imageSrc:
@@ -90,6 +96,7 @@ List<Product> products = [
   //zupy
 
   Product(
+    id: 8,
     name: 'Pomidorowa',
     price: 13.5,
     imageSrc:
@@ -97,6 +104,7 @@ List<Product> products = [
     category: category.Category(4, 'Zupy'),
   ),
   Product(
+    id: 9,
     name: 'Rosół',
     price: 12,
     imageSrc:
@@ -107,6 +115,7 @@ List<Product> products = [
   //napoje całe te
 
   Product(
+    id: 10,
     name: 'Kawa',
     price: 7,
     imageSrc:
@@ -114,6 +123,7 @@ List<Product> products = [
     category: category.Category(5, 'Napoje'),
   ),
   Product(
+    id: 11,
     name: 'Herbata',
     price: 7,
     imageSrc:
@@ -121,6 +131,7 @@ List<Product> products = [
     category: category.Category(5, 'Napoje'),
   ),
   Product(
+    id: 11,
     name: 'Cola',
     price: 7,
     imageSrc: 'https://strefainwestorow.pl/sites/default/files/coca%20cola.jpg',
