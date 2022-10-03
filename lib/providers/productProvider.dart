@@ -39,23 +39,18 @@ class ProductProvider extends ChangeNotifier {
     double modificationPrice = 0;
 
     if (product.topings.isNotEmpty) {
-      toppingPrice = product.topings.fold(0, (previousValue, element) {
-        if (element.isSelected) {
-          return previousValue + element.price;
-        } else {
-          return 0;
-        }
+      toppingPrice = product.topings
+          .where((element) => element.isSelected)
+          .fold(0, (previousValue, element) {
+        return previousValue + element.price;
       });
     }
 
     if (product.modifications.isNotEmpty) {
-      modificationPrice =
-          product.modifications.fold(0, (previousValue, element) {
-        if (element.isSelected) {
-          return previousValue + element.price;
-        } else {
-          return 0;
-        }
+      modificationPrice = product.modifications
+          .where((element) => element.isSelected)
+          .fold(0, (previousValue, element) {
+        return previousValue + element.price;
       });
     }
 
