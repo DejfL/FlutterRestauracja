@@ -4,8 +4,8 @@ import 'package:restauracja/const.dart';
 import 'package:restauracja/models/product.dart';
 import 'package:restauracja/models/topping.dart';
 import 'package:restauracja/models/modification.dart' as modification;
+import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/productProvider.dart';
-import 'package:restauracja/providers/productsProvider.dart';
 import 'package:restauracja/widgets/buttons.dart';
 import 'package:restauracja/widgets/textFormField.dart';
 
@@ -87,7 +87,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
           ),
           boxShadow: const [
             BoxShadow(
-              blurRadius: 20.0,
+              blurRadius: 10,
               color: primaryColor,
             ),
           ],
@@ -181,12 +181,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     PrimaryButton(
                                       text: 'Zatwierdź',
                                       onClick: () {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Dodano do koszyka'),
-                                          ),
-                                        );
+                                        _addToCart(context,
+                                            commentEditingController.text);
                                       },
                                     ),
                                   ],
@@ -210,10 +206,20 @@ class _ProductDescriptionState extends State<ProductDescription> {
     );
   }
 
-  void _addToCart(BuildContext context) {
+  void _addToCart(BuildContext context, String comment) {
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+
+    Provider.of<CartProvider>(context, listen: false).addToCart(
+      productProvider.product,
+      productProvider.quantity,
+      productProvider.totalCost,
+      comment,
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('A SnackBar has been shown.'),
+        content: Text('Dodano do koszyka'),
       ),
     );
   }
@@ -349,7 +355,7 @@ class TotalPrice extends StatelessWidget {
               ?.copyWith(color: primaryColor),
         ),
         Text(
-          '${context.watch<ProductProvider>().totalPrice.toStringAsFixed(2)} zł',
+          '${context.watch<ProductProvider>().totalCost.toStringAsFixed(2)} zł',
           style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 25),
         ),
       ],

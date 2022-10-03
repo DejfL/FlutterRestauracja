@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:restauracja/models/product.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -34,7 +34,7 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  double get totalPrice {
+  double get totalCost {
     double toppingPrice = 0;
     double modificationPrice = 0;
 
@@ -56,6 +56,4 @@ class ProductProvider extends ChangeNotifier {
 
     return (product.price + toppingPrice + modificationPrice) * quantity;
   }
-
-  void addToCart() {}
 }
