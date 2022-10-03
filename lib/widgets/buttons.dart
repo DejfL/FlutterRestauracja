@@ -52,22 +52,21 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SizedBox(
-        height: 45,
-        child: ElevatedButton(
-          onPressed: onClick,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            primary: greenColor,
-            elevation: 4,
+    return SizedBox(
+      height: 45,
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onClick,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 18),
-          ),
+          primary: greenColor,
+          elevation: 4,
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );

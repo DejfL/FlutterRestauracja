@@ -4,7 +4,14 @@ import 'package:restauracja/models/product.dart';
 class ProductProvider extends ChangeNotifier {
   final Product product;
 
-  ProductProvider(this.product);
+  ProductProvider(this.product) {
+    clearSelected();
+  }
+
+  void clearSelected() {
+    product.topings.any((element) => element.isSelected = false);
+    product.modifications.any((element) => element.isSelected = false);
+  }
 
   void toggleTopping(int toppingId) {
     final item =

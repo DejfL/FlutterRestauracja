@@ -15,6 +15,7 @@ class MyBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: onItemTapped,
+      elevation: 5,
       selectedItemColor: greenColor,
       unselectedItemColor: primaryColor.withOpacity(0.5),
       iconSize: 30,

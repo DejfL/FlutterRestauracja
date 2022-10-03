@@ -24,9 +24,9 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: 0,
-      backgroundColor: Theme.of(context).canvasColor,
+      backgroundColor: Colors.white,
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (indexScreen == 0)
             const Icon(

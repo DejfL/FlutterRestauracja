@@ -178,12 +178,14 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    PrimaryButton(
-                                      text: 'Zatwierdź',
-                                      onClick: () {
-                                        _addToCart(context,
-                                            commentEditingController.text);
-                                      },
+                                    Expanded(
+                                      child: PrimaryButton(
+                                        text: 'Zatwierdź',
+                                        onClick: () {
+                                          _addToCart(context,
+                                              commentEditingController.text);
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),

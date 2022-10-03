@@ -31,4 +31,9 @@ class CartProvider extends ChangeNotifier {
     products.add(cart);
     // notifyListeners();
   }
+
+  void removeFromCart(Cart cart) {
+    products.remove(cart);
+    notifyListeners();
+  }
 }

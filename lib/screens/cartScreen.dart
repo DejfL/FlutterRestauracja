@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -7,6 +9,8 @@ import 'package:restauracja/const.dart';
 import 'package:restauracja/models/cart.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/screens/productScreen.dart';
+import 'package:restauracja/widgets/buttons.dart';
+import 'package:restauracja/widgets/textFormField.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -15,20 +19,79 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartProvider = context.watch<CartProvider>();
 
-    cartProvider.addTest();
+    // cartProvider.addTest();
 
-    return ListView.builder(
-      itemCount: cartProvider.products.length,
-      itemBuilder: (context, index) {
-        return ItemCart(
-          cart: cartProvider.products[index],
-        );
-      },
+    if (cartProvider.products.isEmpty) {
+      return Center(
+        child: Text(
+          'Twój koszyk jest pusty',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: cartProvider.products.length,
+            itemBuilder: (context, index) {
+              return Dismissible(
+                key: ValueKey(
+                  cartProvider.products[index].id,
+                ),
+                onDismissed: (direction) {
+                  if (DismissDirection.endToStart == direction) {
+                    Provider.of<CartProvider>(context, listen: false)
+                        .removeFromCart(cartProvider.products[index]);
+                  }
+                },
+                background: backGround(context),
+                child: ItemCart(
+                  cart: cartProvider.products[index],
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PrimaryButton(text: 'Zatwierdź', onClick: () {}),
+        )
+      ],
+    );
+  }
+
+  Padding backGround(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 13, top: 13, bottom: 13),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).errorColor,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(
+              10,
+            ),
+            bottomRight: Radius.circular(
+              10,
+            ),
+          ),
+        ),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(
+          right: 30,
+        ),
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 60,
+        ),
+      ),
     );
   }
 }
 
-class ItemCart extends StatelessWidget {
+class ItemCart extends StatefulWidget {
   final Cart cart;
 
   const ItemCart({
@@ -37,78 +100,98 @@ class ItemCart extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ItemCart> createState() => _ItemCartState();
+}
+
+class _ItemCartState extends State<ItemCart> {
+  late TextEditingController textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController = TextEditingController(text: widget.cart.comment);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    textEditingController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: Container(
-        height: 150,
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: primaryColor,
-            ),
-          ],
+      child: Card(
+        color: greyColor,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
+        child: Column(
           children: [
             Container(
               height: 150,
-              width: 150,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 ),
                 image: DecorationImage(
                   image: NetworkImage(
-                    cart.imageSrc,
+                    widget.cart.imageSrc,
                   ),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      top: 5,
-                      right: 5,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  Text(
+                    widget.cart.name,
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(color: primaryColor),
+                  ),
+                  const Divider(
+                    height: 8,
+                  ),
+                  if (widget.cart.topings.isNotEmpty) Topings(context),
+                  if (widget.cart.modifications.isNotEmpty)
+                    Modifications(context),
+                  if (widget.cart.comment.isNotEmpty)
+                    Column(
                       children: [
-                        itemName(context),
+                        MyTextFormField(
+                          textEditingController: textEditingController,
+                          isReadOnly: true,
+                          lines: 4,
+                        ),
                         const Divider(
-                          height: 5,
+                          height: 8,
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          if (cart.topings.isNotEmpty) Topings(context),
-                          if (cart.modifications.isNotEmpty)
-                            Modifications(context),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
                         'Razem: ',
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(color: primaryColor),
+                      ),
+                      Text(
+                        '${widget.cart.cost.toStringAsFixed(2)} zł',
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ],
                   )
@@ -123,7 +206,7 @@ class ItemCart extends StatelessWidget {
 
   Widget itemName(BuildContext context) {
     return Text(
-      cart.name,
+      widget.cart.name,
       overflow: TextOverflow.fade,
       maxLines: 1,
       softWrap: false,
@@ -133,72 +216,64 @@ class ItemCart extends StatelessWidget {
   }
 
   Widget Topings(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 5,
-        top: 5,
-        right: 5,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Dodatki:',
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Dodatki:',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        ...widget.cart.topings.map(
+          (e) => Row(
+            children: [
+              Text(
+                e.name,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              Text(
+                '+${e.price.toStringAsFixed(2)} zł',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
           ),
-          ...cart.topings.map(
-            (e) => Row(
-              children: [
-                Text(
-                  e.name,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  '+${e.price.toStringAsFixed(2)} zł',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
     );
   }
 
   Widget Modifications(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 5,
-        top: 5,
-        right: 5,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Modifikacje:',
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Modifikacje:',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        ...widget.cart.modifications.map(
+          (e) => Row(
+            children: [
+              Text(
+                e.name,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              Text(
+                '+${e.price.toStringAsFixed(2)} zł',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
           ),
-          ...cart.modifications.map(
-            (e) => Row(
-              children: [
-                Text(
-                  e.name,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  '+${e.price.toStringAsFixed(2)} zł',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
     );
   }
 }
