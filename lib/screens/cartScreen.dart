@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restauracja/const.dart';
+import 'package:restauracja/helpers/sendOrderEmail.dart';
 import 'package:restauracja/models/cart.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/orderHistoryProvider.dart';
@@ -100,11 +101,7 @@ class CartScreen extends StatelessWidget {
               child: PrimaryButton(
                 text: 'Zatwierdź',
                 onClick: () {
-                  final productProvider =
-                      Provider.of<CartProvider>(context, listen: false);
-                  Provider.of<OrderHistoryProvider>(context, listen: false)
-                      .addToHistory(productProvider.products);
-                  productProvider.clearCart();
+                  _confirm(context);
                 },
               ),
             ),
@@ -112,6 +109,14 @@ class CartScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _confirm(BuildContext context) async {
+    final productProvider = Provider.of<CartProvider>(context, listen: false);
+    Provider.of<OrderHistoryProvider>(context, listen: false)
+        .addToHistory(productProvider.products);
+    await sednOrderEmail(productProvider.products, productProvider.totalPrice);
+    productProvider.clearCart();
   }
 
   Padding backGround(BuildContext context) {
