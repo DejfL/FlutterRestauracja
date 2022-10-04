@@ -23,7 +23,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: 0,
+      elevation: 1,
       backgroundColor: Colors.white,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,

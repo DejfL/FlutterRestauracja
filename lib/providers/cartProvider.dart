@@ -36,4 +36,9 @@ class CartProvider extends ChangeNotifier {
     products.remove(cart);
     notifyListeners();
   }
+
+  double get totalPrice {
+    return products.fold(
+        0, (previousValue, element) => previousValue + element.cost);
+  }
 }
