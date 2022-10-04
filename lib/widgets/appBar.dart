@@ -16,6 +16,8 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
       return 'Koszyk';
     } else if (indexScreen == 2) {
       return 'Historia zamówień';
+    } else if (indexScreen == 3) {
+      return 'Konto';
     } else {
       return 'Restaurancja';
     }

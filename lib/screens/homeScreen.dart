@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restauracja/screens/accountScreen.dart';
 import 'package:restauracja/screens/cartScreen.dart';
 import 'package:restauracja/screens/orderHistoryScreen.dart';
 import 'package:restauracja/screens/productsScreen.dart';
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ProductsScreen(),
     CartScreen(),
     OrderHistoryScreen(),
+    AccountScreen(),
   ];
 
   int _indexScreen = 0;

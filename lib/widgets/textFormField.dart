@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import '../const.dart';
 
@@ -8,7 +9,11 @@ class MyTextFormField extends StatelessWidget {
   final String? initialValue;
   final bool isReadOnly;
   final int lines;
+  final bool autoFocus;
+  final TextInputAction textInputAction;
+  final TextInputType textInputType;
   final Function(String val)? onChanged;
+  final Function(String val)? onFieldSubmitted;
 
   const MyTextFormField({
     this.hintText,
@@ -17,7 +22,11 @@ class MyTextFormField extends StatelessWidget {
     this.initialValue,
     this.isReadOnly = false,
     this.lines = 1,
+    this.autoFocus = false,
+    this.textInputAction = TextInputAction.done,
+    this.textInputType = TextInputType.text,
     this.onChanged,
+    this.onFieldSubmitted,
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +38,11 @@ class MyTextFormField extends StatelessWidget {
       initialValue: initialValue,
       readOnly: isReadOnly,
       textAlign: TextAlign.start,
+      autofocus: autoFocus,
+      textInputAction: textInputAction,
+      keyboardType: textInputType,
       onChanged: onChanged,
+      onFieldSubmitted: onFieldSubmitted,
       style: const TextStyle(color: primaryColor),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 15, top: 15),
@@ -42,6 +55,21 @@ class MyTextFormField extends StatelessWidget {
               )
             : null,
       ),
+      validator: (val) {
+        if (TextInputType.emailAddress == textInputType) {
+          if (EmailValidator.validate(val.toString())) {
+            return null;
+          } else {
+            return 'Nieprawidłowy email';
+          }
+        } else {
+          if (val != null && val.toString().isNotEmpty) {
+            return null;
+          } else {
+            return 'Nieprawidłowa wartość';
+          }
+        }
+      },
     );
   }
 }

@@ -83,14 +83,23 @@ class MyApp extends StatelessWidget {
             hintStyle: TextStyle(
               color: primaryColor.withOpacity(0.5),
             ),
+            labelStyle: const TextStyle(color: primaryColor, fontSize: 24.0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: greenColor, width: 1),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
           ),
           colorScheme: ColorScheme.fromSwatch().copyWith(secondary: greenColor),
         ),
-        home: HomeScreen(),
+        home: const HomeScreen(),
       ),
     );
   }
