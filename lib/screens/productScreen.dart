@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restauracja/const.dart';
 import 'package:restauracja/models/product.dart';
-import 'package:restauracja/models/topping.dart';
-import 'package:restauracja/models/modification.dart' as modification;
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/productProvider.dart';
 import 'package:restauracja/widgets/buttons.dart';
@@ -221,6 +219,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        duration: Duration(seconds: 2),
         content: Text('Dodano do koszyka'),
       ),
     );

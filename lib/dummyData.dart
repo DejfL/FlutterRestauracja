@@ -131,7 +131,7 @@ List<Product> products = [
     category: category.Category(5, 'Napoje'),
   ),
   Product(
-    id: 11,
+    id: 12,
     name: 'Cola',
     price: 7,
     imageSrc: 'https://strefainwestorow.pl/sites/default/files/coca%20cola.jpg',

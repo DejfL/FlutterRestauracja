@@ -15,9 +15,9 @@ class CartProvider extends ChangeNotifier {
     final int id = DateTime.now().millisecondsSinceEpoch;
 
     final Cart cart = Cart(
-      quantity,
-      cost,
-      comment,
+      quantity: quantity,
+      cost: cost,
+      comment: comment,
       id: id,
       name: product.name,
       price: product.price,
@@ -29,7 +29,7 @@ class CartProvider extends ChangeNotifier {
     );
 
     products.add(cart);
-    // notifyListeners();
+    notifyListeners();
   }
 
   void removeFromCart(Cart cart) {
@@ -40,5 +40,10 @@ class CartProvider extends ChangeNotifier {
   double get totalPrice {
     return products.fold(
         0, (previousValue, element) => previousValue + element.cost);
+  }
+
+  void clearCart() {
+    products.clear();
+    notifyListeners();
   }
 }
