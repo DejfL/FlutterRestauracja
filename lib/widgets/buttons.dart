@@ -14,20 +14,23 @@ class CategoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle buttonStyle;
+    final Color buttonColor;
     final TextStyle textStyle;
 
     if (category.isActive) {
-      buttonStyle = ElevatedButton.styleFrom(
-        primary: greenColor,
-      );
+      buttonColor = greenColor;
       textStyle = const TextStyle(color: Colors.white);
     } else {
-      buttonStyle = ElevatedButton.styleFrom(
-        primary: Colors.white,
-      );
+      buttonColor = Colors.white;
       textStyle = const TextStyle(color: primaryColor);
     }
+
+    final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      primary: buttonColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
 
     return ElevatedButton(
       onPressed: onClick,
@@ -35,6 +38,81 @@ class CategoryButton extends StatelessWidget {
       child: Text(
         category.name,
         style: textStyle,
+      ),
+    );
+  }
+}
+
+class PrimaryButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onClick;
+
+  const PrimaryButton({Key? key, required this.text, required this.onClick})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 45,
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onClick,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          primary: greenColor,
+          elevation: 4,
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+class AddReduceButton extends StatelessWidget {
+  final VoidCallback onClick;
+  final IconData icon;
+  final bool isEnabled;
+
+  const AddReduceButton.add({
+    Key? key,
+    required this.onClick,
+    this.isEnabled = true,
+  })  : icon = Icons.add,
+        super(key: key);
+
+  const AddReduceButton.reduce({
+    Key? key,
+    required this.onClick,
+    this.isEnabled = true,
+  })  : icon = Icons.remove,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 45,
+      width: 45,
+      child: ElevatedButton(
+        onPressed: isEnabled ? onClick : null,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: EdgeInsets.zero,
+          primary: greenColor,
+          elevation: 4,
+        ),
+        child: Center(
+          child: Icon(
+            icon,
+            size: 40,
+          ),
+        ),
       ),
     );
   }

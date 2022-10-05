@@ -1,81 +1,66 @@
-import 'package:flutter/cupertino.dart';
-import 'package:restauracja/helpers/screenState.dart';
-import 'package:restauracja/models/category.dart' as category;
+import 'package:flutter/material.dart';
 import 'package:restauracja/models/product.dart';
-import '../dummyData.dart' as dummy;
 
 class ProductProvider extends ChangeNotifier {
-  ScreenState screenState = ScreenState.Initial;
+  final Product product;
 
-  List<Product> _products = [];
-  List<category.Category> categories = dummy.categories;
-
-  ProductProvider() {
-    _getProducts();
+  ProductProvider(this.product) {
+    clearSelected();
   }
 
-  Future<void> _getProducts() async {
-    screenState = ScreenState.Loading;
+  void clearSelected() {
+    product.topings.any((element) => element.isSelected = false);
+    product.modifications.any((element) => element.isSelected = false);
+  }
+
+  void toggleTopping(int toppingId) {
+    final item =
+        product.topings.firstWhere((element) => element.id == toppingId);
+
+    item.isSelected = !item.isSelected;
     notifyListeners();
+  }
 
-    await Future.delayed(
-      const Duration(seconds: 1),
-    );
+  void toggleModification(int modificationId) {
+    final item = product.modifications
+        .firstWhere((element) => element.id == modificationId);
 
-    try {
-      _products = dummy.products;
-      screenState = ScreenState.Loaded;
-    } catch (e) {
-      screenState = ScreenState.Error;
-    } finally {
-      notifyListeners();
+    item.isSelected = !item.isSelected;
+    notifyListeners();
+  }
+
+  int quantity = 1;
+
+  void incrementQuantity() {
+    quantity += 1;
+    notifyListeners();
+  }
+
+  void decrementQuantity() {
+    quantity -= 1;
+    notifyListeners();
+  }
+
+  double get totalCost {
+    double toppingPrice = 0;
+    double modificationPrice = 0;
+
+    if (product.topings.isNotEmpty) {
+      toppingPrice = product.topings
+          .where((element) => element.isSelected)
+          .fold(0, (previousValue, element) {
+        return previousValue + element.price;
+      });
     }
-  }
 
-  String _searchText = '';
-  String get searchText => _searchText;
-  set searchText(String value) {
-    _searchText = value;
-    notifyListeners();
-  }
-
-  category.Category _selectedCategory =
-      dummy.categories.firstWhere((element) => element.isActive);
-  category.Category get selectedCategory => _selectedCategory;
-  set selectedCategory(category.Category value) {
-    categories.firstWhere((element) => element.isActive).isActive = false;
-    categories.firstWhere((element) => element.id == value.id).isActive = true;
-    _selectedCategory = value;
-    notifyListeners();
-  }
-
-  List<Product> products() {
-    if (_searchText.isNotEmpty && selectedCategory.isNotAll) {
-      return _products
-          .where(
-            (element) =>
-                element.name.toLowerCase().contains(
-                      _searchText.toLowerCase(),
-                    ) &&
-                element.category.id == _selectedCategory.id,
-          )
-          .toList();
-    } else if (_searchText.isEmpty && selectedCategory.isNotAll) {
-      return _products
-          .where(
-            (element) => element.category.id == _selectedCategory.id,
-          )
-          .toList();
-    } else if (_searchText.isNotEmpty) {
-      return _products
-          .where(
-            (element) => element.name.toLowerCase().contains(
-                  _searchText.toLowerCase(),
-                ),
-          )
-          .toList();
-    } else {
-      return _products;
+    if (product.modifications.isNotEmpty) {
+      modificationPrice = product.modifications
+          .where((element) => element.isSelected)
+          .fold(0, (previousValue, element) {
+        return previousValue + element.price;
+      });
     }
+
+    return (product.price + toppingPrice + modificationPrice) * quantity;
   }
 }
