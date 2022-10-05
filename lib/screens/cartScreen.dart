@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restauracja/const.dart';
+import 'package:restauracja/helpers/emailSettings.dart';
 import 'package:restauracja/helpers/sendOrderEmail.dart';
-import 'package:restauracja/models/cart.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/orderHistoryProvider.dart';
 import 'package:restauracja/widgets/buttons.dart';
 import 'package:restauracja/widgets/productItem.dart';
-import 'package:restauracja/widgets/textFormField.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -115,7 +114,12 @@ class CartScreen extends StatelessWidget {
     final productProvider = Provider.of<CartProvider>(context, listen: false);
     Provider.of<OrderHistoryProvider>(context, listen: false)
         .addToHistory(productProvider.products);
-    await sednOrderEmail(productProvider.products, productProvider.totalPrice);
+
+    if (await emailSettingsExist()) {
+      await sednOrderEmail(
+          productProvider.products, productProvider.totalPrice);
+    }
+
     productProvider.clearCart();
   }
 

@@ -25,8 +25,8 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   void initState() {
-    _getAccount();
     super.initState();
+    _getAccount();
   }
 
   @override
@@ -53,10 +53,11 @@ class _AccountScreenState extends State<AccountScreen> {
           textFields(context),
           const Spacer(),
           PrimaryButton(
-              text: 'Zatwierdź',
-              onClick: () {
-                _confirm('');
-              })
+            text: 'Zatwierdź',
+            onClick: () {
+              _confirm('');
+            },
+          )
         ],
       ),
     );

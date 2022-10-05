@@ -3,6 +3,7 @@ import 'package:restauracja/screens/accountScreen.dart';
 import 'package:restauracja/screens/cartScreen.dart';
 import 'package:restauracja/screens/orderHistoryScreen.dart';
 import 'package:restauracja/screens/productsScreen.dart';
+import 'package:restauracja/screens/settingsScreen.dart';
 import 'package:restauracja/widgets/appBar.dart';
 import 'package:restauracja/widgets/bottomNavigationBar.dart';
 
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     CartScreen(),
     OrderHistoryScreen(),
     AccountScreen(),
+    SettingsScreen(),
   ];
 
   int _indexScreen = 0;

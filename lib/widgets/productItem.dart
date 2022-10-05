@@ -20,14 +20,14 @@ class _ProductItemState extends State<ProductItem> {
 
   @override
   void initState() {
-    super.initState();
     textEditingController = TextEditingController(text: widget.item.comment);
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     textEditingController.dispose();
+    super.dispose();
   }
 
   @override

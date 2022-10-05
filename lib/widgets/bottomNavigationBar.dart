@@ -102,6 +102,26 @@ class MyBottomNavigationBar extends StatelessWidget {
           ),
           label: '',
         ),
+        BottomNavigationBarItem(
+          icon: Column(
+            children: [
+              const Icon(
+                Icons.settings,
+              ),
+              SizedBox(
+                width: 20,
+                height: 5,
+                child: index == 4
+                    ? const Divider(
+                        color: greenColor,
+                        thickness: 4,
+                      )
+                    : const SizedBox.shrink(),
+              )
+            ],
+          ),
+          label: '',
+        ),
       ],
     );
   }

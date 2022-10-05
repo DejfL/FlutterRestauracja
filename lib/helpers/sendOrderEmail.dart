@@ -1,22 +1,28 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:restauracja/helpers/account.dart';
+import 'package:restauracja/helpers/emailSettings.dart';
+import 'package:restauracja/models/account.dart';
 import 'package:restauracja/models/cart.dart';
+import 'package:restauracja/models/emailSettings.dart';
 import 'package:restauracja/models/modification.dart';
 import 'package:restauracja/models/topping.dart';
 
 Future<void> sednOrderEmail(List<Cart> products, double totalPrice) async {
-  final String emailBody = _getEmailBody(products, totalPrice);
+  final Account account = await getAccount();
+  final String emailBody = _getEmailBody(products, totalPrice, account.name);
+  final EmailSettings emailSettings = await getEmailSettings();
 
   final smtpServer = SmtpServer(
-    'smtp-relay.sendinblue.com',
-    username: 'restaurancjaapp@gmail.com',
-    password: 'y2KURLfFqnIDrPMX',
-    port: 587,
+    emailSettings.smtp,
+    username: emailSettings.username,
+    password: emailSettings.password,
+    port: emailSettings.port,
   );
 
   final message = Message()
     ..from = const Address('restaurancjaapp@gmail.com', 'Restaurancja')
-    ..recipients.add('klaudiad1808@gmail.com')
+    ..recipients.add(account.email)
     ..subject = 'Twoje zamówienie w restaurancji'
     ..text = emailBody;
 
@@ -25,8 +31,8 @@ Future<void> sednOrderEmail(List<Cart> products, double totalPrice) async {
   } catch (e) {}
 }
 
-String _getEmailBody(List<Cart> products, double totalPrice) {
-  String body = "Witaj Dejfl\n\n";
+String _getEmailBody(List<Cart> products, double totalPrice, String name) {
+  String body = "Witaj $name\n\n";
   body += 'Twoje zamówienie w restaurancji:\n';
 
   for (Cart product in products) {

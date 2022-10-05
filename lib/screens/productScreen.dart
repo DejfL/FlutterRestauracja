@@ -65,8 +65,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   @override
   void dispose() {
-    super.dispose();
     commentEditingController.dispose();
+    super.dispose();
   }
 
   @override
