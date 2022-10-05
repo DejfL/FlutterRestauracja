@@ -5,6 +5,7 @@ import 'package:restauracja/models/product.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/productProvider.dart';
 import 'package:restauracja/widgets/buttons.dart';
+import 'package:restauracja/widgets/mySnackBar.dart';
 import 'package:restauracja/widgets/textFormField.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -188,7 +189,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 20,
+                                  height: 10,
                                 )
                               ],
                             ),
@@ -218,10 +219,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text('Dodano do koszyka'),
-      ),
+      mySnackBar('Dodano do koszyka'),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:restauracja/const.dart';
 import 'package:restauracja/helpers/emailSettings.dart';
 import 'package:restauracja/models/emailSettings.dart';
 import 'package:restauracja/widgets/buttons.dart';
+import 'package:restauracja/widgets/mySnackBar.dart';
 import 'package:restauracja/widgets/textFormField.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -66,71 +67,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Form textFields(BuildContext context) {
+  Widget textFields(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Nazwa:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _usernameEditingController,
-            autoFocus: true,
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Hasło:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _passwordEditingController,
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'SMTP:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _smtpEditingController,
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Port:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _portEditingController,
-            textInputType: TextInputType.number,
-            onFieldSubmitted: _confirm,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Nazwa:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _usernameEditingController,
+              autoFocus: true,
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Hasło:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _passwordEditingController,
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'SMTP:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _smtpEditingController,
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Port:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _portEditingController,
+              textInputType: TextInputType.number,
+              onFieldSubmitted: _confirm,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -144,10 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         int.parse(_portEditingController.text),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 2),
-          content: Text('Zapisano'),
-        ),
+        mySnackBar('Zapisano'),
       );
     }
   }

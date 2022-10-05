@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restauracja/const.dart';
+import 'package:restauracja/helpers/account.dart';
 import 'package:restauracja/helpers/emailSettings.dart';
 import 'package:restauracja/helpers/sendOrderEmail.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/orderHistoryProvider.dart';
+import 'package:restauracja/providers/screenProvider.dart';
+import 'package:restauracja/screens/homeScreen.dart';
+import 'package:restauracja/widgets/alertDialog.dart';
 import 'package:restauracja/widgets/buttons.dart';
 import 'package:restauracja/widgets/productItem.dart';
 
@@ -111,16 +115,22 @@ class CartScreen extends StatelessWidget {
   }
 
   void _confirm(BuildContext context) async {
-    final productProvider = Provider.of<CartProvider>(context, listen: false);
-    Provider.of<OrderHistoryProvider>(context, listen: false)
-        .addToHistory(productProvider.products);
+    if (await isUserLogged()) {
+      final productProvider = Provider.of<CartProvider>(context, listen: false);
+      Provider.of<OrderHistoryProvider>(context, listen: false)
+          .addToHistory(productProvider.products);
 
-    if (await emailSettingsExist()) {
-      await sednOrderEmail(
-          productProvider.products, productProvider.totalPrice);
+      if (await emailSettingsExist()) {
+        await sednOrderEmail(
+            productProvider.products, productProvider.totalPrice);
+      }
+
+      productProvider.clearCart();
+    } else {
+      okDialog(context, 'Wymagane logowanie').then((value) {
+        Provider.of<ScreenProvider>(context, listen: false).changeScreen(3);
+      });
     }
-
-    productProvider.clearCart();
   }
 
   Padding backGround(BuildContext context) {

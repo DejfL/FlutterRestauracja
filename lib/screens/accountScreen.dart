@@ -1,15 +1,10 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:restauracja/const.dart';
 import 'package:restauracja/helpers/account.dart';
 import 'package:restauracja/models/account.dart';
 import 'package:restauracja/widgets/buttons.dart';
+import 'package:restauracja/widgets/mySnackBar.dart';
 import 'package:restauracja/widgets/textFormField.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -66,37 +61,39 @@ class _AccountScreenState extends State<AccountScreen> {
   Form textFields(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Nazwa:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _nameEditingController,
-            autoFocus: true,
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Email:',
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(color: primaryColor),
-          ),
-          MyTextFormField(
-            textEditingController: _emailEditingController,
-            textInputType: TextInputType.emailAddress,
-            onFieldSubmitted: _confirm,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Nazwa:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _nameEditingController,
+              autoFocus: true,
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Email:',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: primaryColor),
+            ),
+            MyTextFormField(
+              textEditingController: _emailEditingController,
+              textInputType: TextInputType.emailAddress,
+              onFieldSubmitted: _confirm,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -105,10 +102,7 @@ class _AccountScreenState extends State<AccountScreen> {
     if (_formKey.currentState!.validate()) {
       saveAccount(_nameEditingController.text, _emailEditingController.text);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 2),
-          content: Text('Zapisano'),
-        ),
+        mySnackBar('Zapisano'),
       );
     }
   }

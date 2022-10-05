@@ -4,6 +4,7 @@ import 'package:restauracja/const.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/orderHistoryProvider.dart';
 import 'package:restauracja/providers/productsProvider.dart';
+import 'package:restauracja/providers/screenProvider.dart';
 import 'package:restauracja/screens/homeScreen.dart';
 
 void main() {
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: OrderHistoryProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ScreenProvider(),
         ),
       ],
       child: MaterialApp(
@@ -64,18 +68,10 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
-            // labelSmall: const TextStyle(
-            //   color: primaryColor,
-            //   fontSize: 13,
-            // ),
             labelMedium: const TextStyle(
               color: primaryColor,
               fontSize: 15,
             ),
-            // labelLarge: const TextStyle(
-            //   color: primaryColor,
-            //   fontSize: 17,
-            // ),
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
