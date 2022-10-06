@@ -22,7 +22,7 @@ Future<void> sednOrderEmail(List<Cart> products, double totalPrice) async {
     );
 
     final message = Message()
-      ..from = const Address('restaurancjaapp@gmail.com', 'Restaurancja')
+      ..from = const Address('restaurancja@o2.pl', 'Restaurancja')
       ..recipients.add(account.email)
       ..subject = 'Twoje zamówienie w restaurancji'
       ..text = emailBody;
