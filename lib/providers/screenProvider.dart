@@ -1,10 +1,18 @@
 import 'package:flutter/cupertino.dart';
 
+enum screenName {
+  products,
+  cart,
+  orderHistory,
+  account,
+  settings,
+}
+
 class ScreenProvider extends ChangeNotifier {
   int index = 0;
 
-  void changeScreen(int val) {
-    index = val;
+  void changeScreen(screenName val) {
+    index = val.index;
     notifyListeners();
   }
 

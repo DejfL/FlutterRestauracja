@@ -7,7 +7,6 @@ import 'package:restauracja/helpers/sendOrderEmail.dart';
 import 'package:restauracja/providers/cartProvider.dart';
 import 'package:restauracja/providers/orderHistoryProvider.dart';
 import 'package:restauracja/providers/screenProvider.dart';
-import 'package:restauracja/screens/homeScreen.dart';
 import 'package:restauracja/widgets/alertDialog.dart';
 import 'package:restauracja/widgets/buttons.dart';
 import 'package:restauracja/widgets/productItem.dart';
@@ -18,8 +17,6 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = context.watch<CartProvider>();
-
-    // cartProvider.addTest();
 
     if (cartProvider.products.isEmpty) {
       return Center(
@@ -128,7 +125,8 @@ class CartScreen extends StatelessWidget {
       productProvider.clearCart();
     } else {
       okDialog(context, 'Wymagane logowanie').then((value) {
-        Provider.of<ScreenProvider>(context, listen: false).changeScreen(3);
+        Provider.of<ScreenProvider>(context, listen: false)
+            .changeScreen(screenName.account);
       });
     }
   }

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:restauracja/helpers/screenState.dart';
 import 'package:restauracja/models/category.dart' as category;
 import 'package:restauracja/models/product.dart';
-import 'package:restauracja/models/topping.dart';
 import '../dummyData.dart' as dummy;
 
 class ProductsProvider extends ChangeNotifier {

@@ -10,7 +10,7 @@ SnackBar mySnackBar(String text) {
         Radius.circular(10),
       ),
     ),
-    margin: const EdgeInsets.only(left: 16, right: 16, bottom: 60),
+    margin: const EdgeInsets.only(left: 16, right: 16, bottom: 65),
     duration: const Duration(seconds: 2),
     content: Text(text),
   );

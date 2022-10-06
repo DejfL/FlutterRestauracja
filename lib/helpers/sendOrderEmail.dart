@@ -9,26 +9,28 @@ import 'package:restauracja/models/modification.dart';
 import 'package:restauracja/models/topping.dart';
 
 Future<void> sednOrderEmail(List<Cart> products, double totalPrice) async {
-  final Account account = await getAccount();
-  final String emailBody = _getEmailBody(products, totalPrice, account.name);
-  final EmailSettings emailSettings = await getEmailSettings();
-
-  final smtpServer = SmtpServer(
-    emailSettings.smtp,
-    username: emailSettings.username,
-    password: emailSettings.password,
-    port: emailSettings.port,
-  );
-
-  final message = Message()
-    ..from = const Address('restaurancjaapp@gmail.com', 'Restaurancja')
-    ..recipients.add(account.email)
-    ..subject = 'Twoje zamówienie w restaurancji'
-    ..text = emailBody;
-
   try {
+    final Account account = await getAccount();
+    final String emailBody = _getEmailBody(products, totalPrice, account.name);
+    final EmailSettings emailSettings = await getEmailSettings();
+
+    final smtpServer = SmtpServer(
+      emailSettings.smtp,
+      username: emailSettings.username,
+      password: emailSettings.password,
+      port: emailSettings.port,
+    );
+
+    final message = Message()
+      ..from = const Address('restaurancjaapp@gmail.com', 'Restaurancja')
+      ..recipients.add(account.email)
+      ..subject = 'Twoje zamówienie w restaurancji'
+      ..text = emailBody;
+
     send(message, smtpServer);
-  } catch (e) {}
+  } catch (e) {
+    int a = 5;
+  }
 }
 
 String _getEmailBody(List<Cart> products, double totalPrice, String name) {

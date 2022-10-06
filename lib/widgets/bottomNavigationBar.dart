@@ -14,7 +14,8 @@ class MyBottomNavigationBar extends StatelessWidget {
 
     return BottomNavigationBar(
       onTap: (val) {
-        Provider.of<ScreenProvider>(context, listen: false).changeScreen(val);
+        Provider.of<ScreenProvider>(context, listen: false)
+            .changeScreen(screenName.values[val]);
       },
       elevation: 5,
       selectedItemColor: greenColor,

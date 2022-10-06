@@ -1,15 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:restauracja/models/cart.dart';
 import 'package:restauracja/models/product.dart';
-import 'package:restauracja/dummyData.dart' as data;
 
 class CartProvider extends ChangeNotifier {
   List<Cart> products = [];
-
-  void addTest() {
-    addToCart(data.products.first, 1, 25, 'test');
-    addToCart(data.products[4], 3, 50, '');
-  }
 
   void addToCart(Product product, int quantity, double cost, String comment) {
     final int id = DateTime.now().millisecondsSinceEpoch;
